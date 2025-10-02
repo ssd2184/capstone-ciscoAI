@@ -26,7 +26,7 @@ if __name__ == "__main__":
     assert dataset_ids == outputs_ids, "Dataset IDs and output IDs do not match."
     assert all(len(outputs[data['id']]) > 0 for data in dataset), "All outputs must have at least one response."
     assert all(data['id'] in outputs for data in dataset), "All dataset IDs must be present in outputs."
-    assert all(data['id'] in dataset_ids for data in outputs.values()), "All output IDs must be present in dataset."
+    assert all(item['id'] in dataset_ids for responses in outputs.values() for item in responses), "All output IDs must be present in dataset."
     assert all('output' in response for data in dataset for response in outputs[data['id']]), "All responses must have an 'output' field."
 
     llm = LLM(args.evaluator_llm, download_dir=args.cache_dir, max_model_len=args.max_length, tensor_parallel_size=args.tensor_parallel_size)
